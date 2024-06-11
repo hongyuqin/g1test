@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: G1Test
+  mvc:
+    validation:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 1234
+  redis:
+    redisson:
+      config:
+        singleServerConfig:
+          address: "redis://127.0.0.1:6379"
+  cloud:
+    sentinel:
+      eager: true
+      transport:
+        dashboard: 127.0.0.1:8858
+        heartbeat-interval-ms: 500
+  kafka:
+    producer:
+      properties:
+        acks: -1
+        enable:
+          idempotence: true
+        max:
+          in:
+            flight:
+              requests:
+                per:
+                  connection: 1
+        retries: 3
+      bootstrap-servers: 192.168.1.7:9092
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      #transaction-id-prefix: tx.
+    consumer:
+      bootstrap-servers: 192.168.1.7:9092
+      auto-offset-reset: earliest
+      retry: 5
+      #enable-auto-commit: false
+      retries: 10
+    #listener:
+      #ack-mode: manual_immediate
+#      properties:
+#        isolation.level: read_committed
+#rocketmq:
+#  name-server: http://rmq.lmeapp.com:9876
+#  producer:
+#    group: abc
+#  consumer:
+#    topic: consumer_topic
+#    group: consumer_group
+logging:
+  level:
+    org:
+      apache:
+        kafka: INFO
