@@ -14,14 +14,14 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class TransactionConsumer {
-    @KafkaListener(id = "webGroup", topics = "topic_input2")
+    @KafkaListener(id = "webGroup2", topics = "topic_input7")
     public void listen(ConsumerRecord<String,String> record) {
         try {
             log.info("input value: {} {} {} {} {}", record.topic(), record.offset(), record.partition(),getMessageId(record), record.value());
-            if(record.value().contains("3")){
-                log.info("errorxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                throw new RuntimeException();
-            }
+//            if(record.value().contains("3")){
+//                log.info("errorxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                throw new RuntimeException();
+//            }
             //ack.acknowledge();
         } catch (Exception e) {
             log.error("listen exception : ",e);

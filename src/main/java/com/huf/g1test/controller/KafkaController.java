@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.TimeUnit;
+
 @RestController
 @Slf4j
 @RequestMapping("kafka")
@@ -18,19 +20,24 @@ public class KafkaController {
     @Autowired
     private UserService userService;
 
+    private int sendTransactionIndex = 0;
+
     @RequestMapping("send")
     @Transactional
-    public String send() {
-        log.info("sending ...");
+    public String send() throws Exception{
+        log.info("sending ... ： {}",sendTransactionIndex);
 
-        String topic = "topic_input2";
-        String key = "my-key";
-        String value = "my-value";
+        String topic = "topic_input7";
+        String value = "transaction";
 
         // 发送相同的消息多次
-        for (int i = 0; i < 10; i++) {
-            template.send(new ProducerRecord<>(topic, key, value+i));
+        template.send(new ProducerRecord<>(topic, value+sendTransactionIndex));
+        if(sendTransactionIndex++ == 0){
+            log.info("sleeping...");
+            TimeUnit.MINUTES.sleep(1);
         }
+
+        //int j = 1/0;
         return "test";
     }
 

@@ -33,19 +33,18 @@ spring:
                 per:
                   connection: 1
         retries: 3
-      bootstrap-servers: 192.168.1.7:9092
+      bootstrap-servers: 127.0.0.1:9092
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      #transaction-id-prefix: tx.
+      transaction-id-prefix: tx1.
+      enable-transactions: true
     consumer:
-      bootstrap-servers: 192.168.1.7:9092
+      bootstrap-servers: 127.0.0.1:9092
       auto-offset-reset: earliest
       retry: 5
-      #enable-auto-commit: false
       retries: 10
-    #listener:
+      isolation-level: read_committed
+    listener:
       #ack-mode: manual_immediate
-#      properties:
-#        isolation.level: read_committed
 #rocketmq:
 #  name-server: http://rmq.lmeapp.com:9876
 #  producer:
