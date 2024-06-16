@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -38,6 +39,20 @@ public class KafkaController {
         }
 
         //int j = 1/0;
+        return "test";
+    }
+
+    //测试下listener是串行消费吗，拉了1 2消息，是1处理完再处理2吗？
+    @RequestMapping("sendTestListener")
+    @Transactional
+    public String sendTestListener() throws Exception{
+        log.info("sendTestListener ... ");
+
+        String topic = "topic_input9";
+        String value = "transaction";
+
+        // 发送相同的消息多次
+        template.send(new ProducerRecord<>(topic, value+ Instant.now().getEpochSecond()));
         return "test";
     }
 

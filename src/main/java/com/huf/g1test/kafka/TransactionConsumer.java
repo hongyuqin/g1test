@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class TransactionConsumer {
-    @KafkaListener(id = "webGroup2", topics = "topic_input7")
+    @KafkaListener(id = "webGroup2", topics = "topic_input9")
     public void listen(ConsumerRecord<String,String> record) {
         try {
             log.info("input value: {} {} {} {} {}", record.topic(), record.offset(), record.partition(),getMessageId(record), record.value());
@@ -22,6 +22,8 @@ public class TransactionConsumer {
 //                log.info("errorxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 //                throw new RuntimeException();
 //            }
+            TimeUnit.SECONDS.sleep(100);
+            log.info("finish  : {}", record.value());
             //ack.acknowledge();
         } catch (Exception e) {
             log.error("listen exception : ",e);
