@@ -21,45 +21,22 @@ public class KafkaController {
     @Autowired
     private UserService userService;
 
-    private int sendTransactionIndex = 0;
-
     @RequestMapping("send")
     @Transactional
     public String send() throws Exception{
-        log.info("sending ... ： {}",sendTransactionIndex);
+        log.info("sending ...");
 
-        String topic = "topic_input7";
-        String value = "transaction";
+        String topic = "topic_consume_for";
+        String value = "test";
+        for(int i = 0 ;i<100;i++) {
+            // 发送相同的消息多次
+            template.send(new ProducerRecord<>(topic, value+i));
 
-        // 发送相同的消息多次
-        template.send(new ProducerRecord<>(topic, value+sendTransactionIndex));
-        if(sendTransactionIndex++ == 0){
-            log.info("sleeping...");
-            TimeUnit.MINUTES.sleep(1);
         }
 
         //int j = 1/0;
         return "test";
     }
 
-    //测试下listener是串行消费吗，拉了1 2消息，是1处理完再处理2吗？
-    @RequestMapping("sendTestListener")
-    @Transactional
-    public String sendTestListener() throws Exception{
-        log.info("sendTestListener ... ");
-
-        String topic = "topic_input9";
-        String value = "transaction";
-
-        // 发送相同的消息多次
-        template.send(new ProducerRecord<>(topic, value+ Instant.now().getEpochSecond()));
-        return "test";
-    }
-
-    @RequestMapping("send_trans")
-    public String send_trans() {
-        userService.addUser1();
-        return "test";
-    }
 
 }
