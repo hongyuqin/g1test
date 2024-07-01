@@ -18,7 +18,7 @@ public class TransactionConsumer {
     public void listen(ConsumerRecord<String,String> record) {
         try {
             log.info("input value: {} {} {} {} {}",  record.value(),record.topic(), record.offset(), record.partition(),getMessageId(record));
-            TimeUnit.SECONDS.sleep(10);
+            //TimeUnit.SECONDS.sleep(10);
             log.info("finish  : {}", record.value());
             //ack.acknowledge();
         } catch (Exception e) {

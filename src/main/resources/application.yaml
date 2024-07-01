@@ -21,7 +21,9 @@ spring:
         dashboard: 127.0.0.1:8858
         heartbeat-interval-ms: 500
   kafka:
+    bootstrap-servers: 127.0.0.1:29092,127.0.0.1:39092,127.0.0.1:49092
     producer:
+      bootstrap-servers: 127.0.0.1:29092,127.0.0.1:39092,127.0.0.1:49092
       properties:
         acks: -1
         enable:
@@ -33,12 +35,11 @@ spring:
                 per:
                   connection: 1
         retries: 3
-      bootstrap-servers: 127.0.0.1:9092
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 #      transaction-id-prefix: tx1.
 #      enable-transactions: true
     consumer:
-      bootstrap-servers: 127.0.0.1:9092
+      bootstrap-servers: 127.0.0.1:29092,127.0.0.1:39092,127.0.0.1:49092
       auto-offset-reset: earliest
 #      isolation-level: read_committed
       #ack-mode: manual_immediate
@@ -49,6 +50,7 @@ spring:
 #  consumer:
 #    topic: consumer_topic
 #    group: consumer_group
+
 logging:
   level:
     org:
