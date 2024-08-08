@@ -6,6 +6,7 @@ import com.huf.g1test.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,10 +29,15 @@ public class ReadWriteTest {
         System.out.println("user is : "+list);
     }
 
+    /**
+     * 事务里，读请求也会读主库
+     */
     @Test
+    @Transactional
     public void testInsertAndSelect(){
         testInsert();
         testSelect();
     }
+
 
 }
