@@ -4,51 +4,44 @@ spring:
   mvc:
     validation:
       enabled: true
-  datasource:
-    url: jdbc:mysql://localhost:3306/test
-    driver-class-name: com.mysql.jdbc.Driver
-    username: root
-    password: 1234
-  redis:
-    redisson:
-      config:
-        singleServerConfig:
-          address: "redis://127.0.0.1:6379"
+  shardingsphere:
+    datasource:
+      names:  master,slave0
+      master:
+        url: jdbc:mysql://localhost:3306/test
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        username: hongyuqin
+        password: 123456
+      slave0:
+        url: jdbc:mysql://localhost:3307/test
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        username: hongyuqin
+        password: 123456
+    mode:
+      type: Memory # 内存模式
+    props:
+      sql-show: true
+    rules:
+      readwrite-splitting:
+        load-balancers:
+          alg_round:
+            type: ROUND_ROBIN
+        data-sources:
+          myds:
+            type: Static
+            load-balancer-name: alg_round
+            props:
+              write-data-source-name: master
+              read-data-source-names: slave0
+
   cloud:
     sentinel:
       eager: true
       transport:
         dashboard: 127.0.0.1:8858
         heartbeat-interval-ms: 500
-  kafka:
-    producer:
-      properties:
-        acks: -1
-        enable:
-          idempotence: true
-        max:
-          in:
-            flight:
-              requests:
-                per:
-                  connection: 1
-        retries: 3
-      bootstrap-servers: 127.0.0.1:9092
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-#      transaction-id-prefix: tx1.
-#      enable-transactions: true
-    consumer:
-      bootstrap-servers: 127.0.0.1:9092
-      auto-offset-reset: earliest
-#      isolation-level: read_committed
-      #ack-mode: manual_immediate
-#rocketmq:
-#  name-server: http://rmq.lmeapp.com:9876
-#  producer:
-#    group: abc
-#  consumer:
-#    topic: consumer_topic
-#    group: consumer_group
 logging:
   level:
     org:
