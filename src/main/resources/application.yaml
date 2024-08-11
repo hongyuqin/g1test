@@ -1,6 +1,6 @@
 spring:
   application:
-    name: G1Test
+    name: springboot-prometheus
   mvc:
     validation:
       enabled: true
@@ -47,3 +47,17 @@ logging:
     org:
       apache:
         kafka: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
