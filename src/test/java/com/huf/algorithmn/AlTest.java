@@ -40,12 +40,50 @@ public class AlTest {
         return result;
     }
 
+    /**
+     * 283.移动零
+     * @param nums
+     */
+    public void moveZeroes(int[] nums) {
+        //从头开始遍历 快指针慢指针。快指针遍历完，从慢指针开始都赋值为0
+        int low = 0;
+        int fast = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != 0) {
+                nums[low++] = nums[fast];
+            }
+            fast++;
+        }
+        while (low < fast) {
+            nums[low++] = 0;
+        }
+    }
+
+    /**
+     * 53.最大子数组和
+     * @param nums
+     * @return
+     */
+    public int maxSubArray(int[] nums) {
+        int max = nums[0];
+        int cur = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            cur = Math.max(nums[i],cur+nums[i]);
+            max = Math.max(max, cur);
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
         AlTest alTest = new AlTest();
         /*int[] result = alTest.twoSum(new int[]{3, 3}, 6);
-        System.out.println(result);*/
-        int[][] intervals = {{1,4},{0,4}};
-        int[][] result = alTest.merge(intervals);
         System.out.println(result);
+        int[][] intervals = {{1,4},{0,4}};
+        int[][] result = alTest.merge(intervals);*/
+        /*int[] nums = new int[]{0,1,0,3,12};
+        alTest.moveZeroes(nums);
+        System.out.println("haha");*/
+        //System.out.println(result);
+        System.out.println(alTest.maxSubArray(new int[]{5,4,-1,7,8}));
     }
 }
