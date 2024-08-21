@@ -73,6 +73,77 @@ public class AlTest {
         }
         return max;
     }
+    public static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
+
+    /**
+     * 234 .回文链表
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        //1.先计算长度
+        ListNode temp = head;
+        int len = 0;
+        while (temp != null) {
+            len++;
+            temp = temp.next;
+        }
+        //先获取这reverse个元素，截断，然后单独反转
+        int reverse = len/2;
+        //2.截断前面那段
+        ListNode next = head;
+        while (reverse-- > 0) {
+            temp = next;
+            next = next.next;
+            if(reverse == 0) {
+                temp.next = null;
+            }
+        }
+        //3.反转
+        temp = head;
+        temp = reverseListNode(temp);
+        //4.比较
+        if (len % 2 == 1) {
+            next = next.next;
+        }
+        while (temp != null && next != null) {
+            if (temp.val != next.val) {
+                return false;
+            }
+            temp = temp.next;
+            next = next.next;
+        }
+        return true;
+    }
+
+    private ListNode reverseListNode(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode prev = head;
+        ListNode temp = head.next;
+        ListNode next = temp.next;
+        prev.next = null;
+        while (true) {
+            temp.next = prev;
+            prev = temp;
+            if(next == null){
+                break;
+            }
+            temp = next;
+            next = next.next;
+        }
+        return temp;
+    }
 
     public static void main(String[] args) {
         AlTest alTest = new AlTest();
@@ -84,6 +155,12 @@ public class AlTest {
         alTest.moveZeroes(nums);
         System.out.println("haha");*/
         //System.out.println(result);
-        System.out.println(alTest.maxSubArray(new int[]{5,4,-1,7,8}));
+        //System.out.println(alTest.maxSubArray(new int[]{5,4,-1,7,8}));
+        ListNode head = new ListNode(3);
+        head.next = new ListNode(3);
+        /*head.next.next = new ListNode(2);
+        head.next.next.next = new ListNode(1);
+        head.next.next.next.next = new ListNode(3);*/
+        System.out.println(alTest.isPalindrome(head));
     }
 }
