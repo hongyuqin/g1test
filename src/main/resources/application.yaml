@@ -1,9 +1,24 @@
+server:
+  port: 8083
 spring:
   application:
     name: G1Test
   mvc:
     validation:
       enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+
+rocketmq:
+  name-server: http://localhost:9876
+  producer:
+    group: abc
+  consumer:
+    topic: TestTopic
+    group: consumer_group
 logging:
   level:
     org:
