@@ -62,4 +62,11 @@ public class KafkaController {
         return "test";
     }
 
+    @RequestMapping("just_send")
+    @Transactional
+    public void justSend(){
+        template.send(new ProducerRecord<>("topic_input9", "haha"));
+        int i = 1/0;
+    }
+
 }
