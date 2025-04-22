@@ -20,12 +20,15 @@ public class CServiceImpl implements CService {
     @Transactional
     public void testTransactional() {
         log.info("test");
-        producerDemo.sendAfterCommit("TestTopic","hello");
+        for(int i = 0 ;i<1000;i++){
+            producerDemo.sendMessage("TestTopic","hello"+i);
+        }
+        //producerDemo.sendAfterCommit("TestTopic","hello");
 
         User user = new User();
         user.setName("hongyuqin");
         user.setAge(25);
         userDao.insert(user);
-        throw new RuntimeException();
+        //throw new RuntimeException();
     }
 }

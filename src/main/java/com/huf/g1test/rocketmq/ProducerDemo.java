@@ -17,7 +17,7 @@ public class ProducerDemo {
     // 发送消息的实例
     public void sendMessage(String topic, String msg) {
         rocketMQTemplate.convertAndSend(topic,msg);
-        log.info("sendMessage : {}", msg);
+        //log.info("sendMessage : {}", msg);
     }
 
     public void sendAfterCommit(String topic,String msg){
