@@ -3,6 +3,7 @@ package com.huf.g1test.rocketmq;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -18,6 +19,12 @@ public class ProducerDemo {
     public void sendMessage(String topic, String msg) {
         rocketMQTemplate.convertAndSend(topic,msg);
         //log.info("sendMessage : {}", msg);
+    }
+
+    public void sendOrderMessage(String msg){
+        rocketMQTemplate.syncSendOrderly("OrderTopic",
+                MessageBuilder.withPayload(msg).build(),
+                "1");
     }
 
     public void sendAfterCommit(String topic,String msg){

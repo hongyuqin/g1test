@@ -22,6 +22,7 @@ public class CServiceImpl implements CService {
         log.info("test");
         for(int i = 0 ;i<1000;i++){
             producerDemo.sendMessage("TestTopic","hello"+i);
+            //            producerDemo.sendOrderMessage("hello"+i);
         }
         //producerDemo.sendAfterCommit("TestTopic","hello");
 
