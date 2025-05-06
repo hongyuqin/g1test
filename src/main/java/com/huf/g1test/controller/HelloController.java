@@ -1,28 +1,20 @@
 package com.huf.g1test.controller;
 
-import com.huf.g1test.service.CService;
-import org.redisson.Redisson;
-import org.redisson.api.RLock;
-import org.redisson.api.RRateLimiter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.TimeUnit;
-
 @RestController
 public class HelloController {
-    @Autowired
-    private CService cService;
-    @Autowired
+   /* @Autowired
     private Redisson redisson;
+*/
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
-    @GetMapping("test")
-    public void testTransactional(){
-        cService.testTransactional();
-    }
 
-    @GetMapping("testLock")
+   /* @GetMapping("testLock")
     public void testLock() throws InterruptedException {
         RLock lock = redisson.getLock("lock");
         //看看怎么限流
@@ -31,6 +23,12 @@ public class HelloController {
         boolean res = lock.tryLock(100, 10, TimeUnit.SECONDS);
 
         lock.unlock();
+    }*/
 
+    @GetMapping("testCluster")
+    public void testCluster(){
+        redisTemplate.opsForValue().set("test_key", "Hello Redis Cluster!");
+        String value = (String) redisTemplate.opsForValue().get("test_key");
+        System.out.println("Value: " + value); // 输出 "Hello Redis Cluster!"
     }
 }

@@ -11,14 +11,17 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
+  redis:
+    cluster:
+      nodes: 127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005,127.0.0.1:7006
+      max-redirects: 3  # 最大重定向次数
+    timeout: 5000
+    lettuce: # 或 jedis（根据实际客户端）
+      pool:
+        max-active: 16
+        max-idle: 8
+        min-idle: 4
 
-rocketmq:
-  name-server: http://localhost:9876
-  producer:
-    group: abc
-  consumer:
-    topic: TestTopic
-    group: consumer_group
 logging:
   level:
     org:
