@@ -12,13 +12,6 @@ spring:
     username: root
     password: root
 
-rocketmq:
-  name-server: http://localhost:9876
-  producer:
-    group: abc
-  consumer:
-    topic: OrderTopic
-    group: consumer_group
 logging:
   level:
     org:
