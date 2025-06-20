@@ -13,12 +13,14 @@ spring:
     producer:
       bootstrap-servers: 127.0.0.1:9092
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      transaction-id-prefix: tx1.
+      #transaction-id-prefix: tx1.
     consumer:
       bootstrap-servers: 127.0.0.1:9092
       auto-offset-reset: earliest
+      #enable-auto-commit: false
       #isolation-level: read_committed
-
+    listener:
+      ack-mode: time
 logging:
   level:
     org:

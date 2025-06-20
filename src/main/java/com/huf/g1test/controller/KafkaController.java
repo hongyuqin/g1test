@@ -48,7 +48,7 @@ public class KafkaController {
     public String sendTestListener() throws Exception{
         log.info("sendTestListener ... ");
 
-        String topic = "topic_input9";
+        String topic = "topic_auto_commit";
         String value = "transaction";
 
         // 发送相同的消息多次
