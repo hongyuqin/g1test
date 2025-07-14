@@ -86,11 +86,40 @@ public class LeetcodeTest {
         }
     }
 
+    /**
+     * 206 反转链表
+     * @param head
+     * @return
+     */
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for (int num : nums) {
+            result = result^num;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         LeetcodeTest test = new LeetcodeTest();
-        int[][] matrix = new int[][]{{1,1,1},{1,0,1},{1,1,1}};
+        /*ListNode listNode = new ListNode(1);
+        listNode.next = new ListNode(2);
+        listNode.next.next = new ListNode(3);
+        ListNode result = test.reverseList(listNode);
+        System.out.println(result);*/
+        /*int[][] matrix = new int[][]{{1,1,1},{1,0,1},{1,1,1}};
         test.setZeroes(matrix);
-        System.out.println("haha");
+        System.out.println("haha");*/
         /*int result = test.subarraySum(new int[]{-1,-1,1},0);
         System.out.println(result);*/
     }
