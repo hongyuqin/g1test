@@ -19,8 +19,8 @@ spring:
         server-addr: 127.0.0.1:8848
         # 配置自动刷新（关键！）
         extension-configs: # 扩展配置
-            - data-id: g1test.yaml
-              group: DEFAULT_GROUP
-              refresh: true
+          - data-id: g1test.yaml
+            group: DEFAULT_GROUP
+            refresh: true
       discovery:
         server-addr: 127.0.0.1:8848

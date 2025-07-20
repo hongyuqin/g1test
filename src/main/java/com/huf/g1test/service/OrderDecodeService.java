@@ -24,7 +24,7 @@ public class OrderDecodeService {
 
     @Value("${name:hong}")
     private void setName(String name) {
-        log.info("name is : {}", name);
+        //log.info("name is : {}", name);
         this.name = name;
     }
 
@@ -68,7 +68,15 @@ public class OrderDecodeService {
         List<Future<String>> futures = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             final int orderId = i;
-            futures.add(executor.submit(() -> decodeOrder(orderId)));
+            futures.add(executor.submit(() -> {
+                try {
+                    // 模拟耗时任务
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                return decodeOrder(orderId);
+            }));
         }
         List<String> results = new ArrayList<>();
         for (Future<String> f : futures) {
