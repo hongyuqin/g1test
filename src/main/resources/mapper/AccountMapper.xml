@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huf.g1test.mapper.AccountMapper">
+
+    <resultMap id="BaseResultMap" type="com.huf.g1test.entity.Account">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="balance" property="balance" jdbcType="DECIMAL"/>
+        <result column="currency" property="currency" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT * FROM account WHERE user_id = #{userId}
+    </select>
+
+    <update id="updateBalance">
+        UPDATE account SET balance = balance + #{amount}, update_time = NOW() 
+        WHERE user_id = #{userId}
+    </update>
+
+    <insert id="insert" parameterType="com.huf.g1test.entity.Account">
+        INSERT INTO account (user_id, balance, currency, status, create_time, update_time)
+        VALUES (#{userId}, #{balance}, #{currency}, #{status}, NOW(), NOW())
+    </insert>
+
+</mapper> 
