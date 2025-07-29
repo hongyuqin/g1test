@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  mysql-master:
+    image: mysql:8.0
+    container_name: mysql-master
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql-master-data:/var/lib/mysql
+      - ./mysql/master/conf.d:/etc/mysql/conf.d
+      - ./mysql/master/init:/docker-entrypoint-initdb.d
+    ports:
+      - "13306:3306"
+    networks:
+      - mysql-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW
+
+  mysql-slave:
+    image: mysql:8.0
+    container_name: mysql-slave
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql-slave-data:/var/lib/mysql
+      - ./mysql/slave/conf.d:/etc/mysql/conf.d
+      - ./mysql/slave/init:/docker-entrypoint-initdb.d
+    ports:
+      - "13307:3306"
+    networks:
+      - mysql-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    command: --server-id=2 --log-bin=mysql-bin --binlog-format=ROW --relay-log=mysql-relay
+    depends_on:
+      - mysql-master
+
+  mysql-setup:
+    image: mysql:8.0
+    container_name: mysql-setup
+    restart: "no"
+    entrypoint: [ "bash", "/setup.sh" ]
+    volumes:
+      - ./mysql/setup.sh:/setup.sh
+    networks:
+      - mysql-network
+    depends_on:
+      - mysql-master
+      - mysql-slave
+
+volumes:
+  mysql-master-data:
+  mysql-slave-data:
+
+networks:
+  mysql-network:
+    driver: bridge 

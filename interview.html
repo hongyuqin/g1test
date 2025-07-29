@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后端开发面试题 - 9年经验级别</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .question-container {
+            padding: 30px;
+        }
+        
+        .question {
+            background: #f8f9fa;
+            border-left: 5px solid #007bff;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .question p {
+            margin-bottom: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .question textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        .question textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,123,255,0.3);
+        }
+        
+        .answer {
+            background: #e8f5e8;
+            border-left: 5px solid #28a745;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .answer h4 {
+            color: #155724;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .answer-content {
+            color: #155724;
+            line-height: 1.8;
+        }
+        
+        .answer-content h5 {
+            margin: 15px 0 8px 0;
+            color: #0f5132;
+        }
+        
+        .answer-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .answer-content li {
+            margin-bottom: 5px;
+        }
+        
+        .answer-content code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #28a745, #20c997);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        .timer {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 后端开发面试题</h1>
+            <p>9年经验级别 - 深度技术考察</p>
+        </div>
+        
+        <div class="question-container">
+            <div class="timer" id="timer">⏱️ 建议答题时间：每题5-8分钟</div>
+            
+            <div class="stats">
+                <span>总题数：10</span>
+                <span id="completed">已完成：0</span>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            
+            <div class="question" id="q1">
+                <h3>题目 1：MySQL事务隔离级别与锁机制</h3>
+                <p>请详细解释MySQL的四种事务隔离级别（Read Uncommitted、Read Committed、Repeatable Read、Serializable），并说明每种隔离级别下可能出现的问题（脏读、不可重复读、幻读）。同时，请解释MySQL的锁机制，包括行锁、表锁、间隙锁、临键锁的区别和使用场景。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(1)">查看答案</button>
+                <div class="answer" id="answer1">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>事务隔离级别：</h5>
+                        <ul>
+                            <li><strong>Read Uncommitted</strong>：最低级别，可能读取到未提交的数据，存在脏读问题</li>
+                            <li><strong>Read Committed</strong>：只能读取已提交的数据，避免脏读，但存在不可重复读</li>
+                            <li><strong>Repeatable Read</strong>：MySQL默认级别，保证同一事务内多次读取结果一致，但存在幻读</li>
+                            <li><strong>Serializable</strong>：最高级别，完全串行化执行，避免所有并发问题但性能最差</li>
+                        </ul>
+                        
+                        <h5>锁机制详解：</h5>
+                        <ul>
+                            <li><strong>行锁（Record Lock）</strong>：锁定索引记录，InnoDB默认使用</li>
+                            <li><strong>表锁（Table Lock）</strong>：锁定整个表，MyISAM使用</li>
+                            <li><strong>间隙锁（Gap Lock）</strong>：锁定索引记录之间的间隙，防止幻读</li>
+                            <li><strong>临键锁（Next-Key Lock）</strong>：行锁+间隙锁的组合</li>
+                        </ul>
+                        
+                        <h5>实际应用场景：</h5>
+                        <p>在高并发系统中，需要根据业务场景选择合适的隔离级别。例如：</p>
+                        <ul>
+                            <li>金融交易：使用Serializable确保数据一致性</li>
+                            <li>报表查询：使用Read Committed提高并发性能</li>
+                            <li>一般业务：使用Repeatable Read平衡性能和一致性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q2">
+                <h3>题目 2：Redis持久化与集群架构</h3>
+                <p>请详细说明Redis的两种持久化方式（RDB和AOF）的优缺点，以及混合持久化的实现原理。同时，请解释Redis集群的三种模式（主从复制、哨兵模式、Cluster模式）的区别，以及在实际项目中如何选择合适的集群方案。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(2)">查看答案</button>
+                <div class="answer" id="answer2">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>持久化方式对比：</h5>
+                        <ul>
+                            <li><strong>RDB（快照）</strong>：
+                                <br>优点：恢复速度快，文件紧凑，适合备份
+                                <br>缺点：可能丢失最后一次快照后的数据，fork子进程消耗内存
+                            </li>
+                            <li><strong>AOF（日志）</strong>：
+                                <br>优点：数据安全性高，支持多种fsync策略
+                                <br>缺点：文件较大，恢复速度慢，重写过程复杂
+                            </li>
+                            <li><strong>混合持久化</strong>：结合RDB和AOF，先RDB快照，再追加AOF日志</li>
+                        </ul>
+                        
+                        <h5>集群模式对比：</h5>
+                        <ul>
+                            <li><strong>主从复制</strong>：简单易用，适合读写分离，但无自动故障转移</li>
+                            <li><strong>哨兵模式</strong>：自动故障检测和转移，适合中小规模集群</li>
+                            <li><strong>Cluster模式</strong>：分片存储，支持水平扩展，适合大规模数据</li>
+                        </ul>
+                        
+                        <h5>选择建议：</h5>
+                        <ul>
+                            <li>小规模应用：主从复制 + 哨兵</li>
+                            <li>大规模应用：Cluster模式</li>
+                            <li>数据量<10GB：哨兵模式</li>
+                            <li>数据量>10GB：Cluster模式</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q3">
+                <h3>题目 3：Kafka消息可靠性保证</h3>
+                <p>请详细解释Kafka如何保证消息的可靠性，包括生产者端的消息发送机制、消费者端的消息消费机制，以及如何实现精确一次语义（Exactly Once Semantics）。同时，请说明Kafka的分区策略和副本机制对可靠性的影响。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(3)">查看答案</button>
+                <div class="answer" id="answer3">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>生产者可靠性保证：</h5>
+                        <ul>
+                            <li><strong>acks参数</strong>：0（无确认）、1（leader确认）、all（所有副本确认）</li>
+                            <li><strong>重试机制</strong>：自动重试失败的消息发送</li>
+                            <li><strong>幂等性</strong>：通过PID和序列号避免重复发送</li>
+                        </ul>
+                        
+                        <h5>消费者可靠性保证：</h5>
+                        <ul>
+                            <li><strong>手动提交offset</strong>：确保消息处理完成后再提交</li>
+                            <li><strong>事务性消费</strong>：结合外部存储实现原子性</li>
+                            <li><strong>死信队列</strong>：处理失败的消息</li>
+                        </ul>
+                        
+                        <h5>精确一次语义实现：</h5>
+                        <ul>
+                            <li><strong>幂等性生产者</strong>：避免重复发送</li>
+                            <li><strong>事务性API</strong>：跨分区原子性操作</li>
+                            <li><strong>流处理语义</strong>：Kafka Streams的EOS支持</li>
+                        </ul>
+                        
+                        <h5>分区和副本机制：</h5>
+                        <ul>
+                            <li><strong>分区策略</strong>：轮询、哈希、自定义分区器</li>
+                            <li><strong>副本机制</strong>：ISR（In-Sync Replicas）确保数据一致性</li>
+                            <li><strong>Leader选举</strong>：Zookeeper或KRaft模式下的控制器选举</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q4">
+                <h3>题目 4：RocketMQ事务消息实现</h3>
+                <p>请详细解释RocketMQ事务消息的实现原理，包括两阶段提交（2PC）的具体流程，以及如何保证分布式事务的一致性。同时，请说明RocketMQ的存储架构（CommitLog、ConsumeQueue、IndexFile）对事务消息的支持。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(4)">查看答案</button>
+                <div class="answer" id="answer4">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>事务消息两阶段提交流程：</h5>
+                        <ul>
+                            <li><strong>第一阶段（发送半事务消息）</strong>：
+                                <br>1. 生产者发送半事务消息到MQ
+                                <br>2. MQ返回消息ID，但不立即投递给消费者
+                                <br>3. 生产者执行本地事务
+                            </li>
+                            <li><strong>第二阶段（提交或回滚）</strong>：
+                                <br>1. 生产者根据本地事务结果发送提交或回滚指令
+                                <br>2. MQ根据指令决定是否投递消息给消费者
+                            </li>
+                        </ul>
+                        
+                        <h5>一致性保证机制：</h5>
+                        <ul>
+                            <li><strong>事务状态回查</strong>：MQ定期回查生产者确认事务状态</li>
+                            <li><strong>超时机制</strong>：超过回查次数后自动回滚</li>
+                            <li><strong>幂等性</strong>：通过事务ID避免重复处理</li>
+                        </ul>
+                        
+                        <h5>存储架构支持：</h5>
+                        <ul>
+                            <li><strong>CommitLog</strong>：顺序写入事务消息，保证性能</li>
+                            <li><strong>ConsumeQueue</strong>：记录消息的消费状态</li>
+                            <li><strong>事务状态存储</strong>：单独存储事务状态信息</li>
+                        </ul>
+                        
+                        <h5>实际应用场景：</h5>
+                        <ul>
+                            <li>订单支付流程：确保订单创建和支付通知的原子性</li>
+                            <li>库存扣减：确保库存更新和订单创建的原子性</li>
+                            <li>积分系统：确保积分扣减和业务操作的原子性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q5">
+                <h3>题目 5：分布式系统CAP理论与一致性算法</h3>
+                <p>请详细解释CAP理论（一致性、可用性、分区容错性）的含义，以及在实际分布式系统设计中如何权衡这三个特性。同时，请说明Paxos、Raft等一致性算法的核心思想，以及它们在分布式系统中的具体应用。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(5)">查看答案</button>
+                <div class="answer" id="answer5">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>CAP理论详解：</h5>
+                        <ul>
+                            <li><strong>一致性（Consistency）</strong>：所有节点在同一时间看到的数据是一致的</li>
+                            <li><strong>可用性（Availability）</strong>：每个请求都能收到一个响应，但不保证是最新的</li>
+                            <li><strong>分区容错性（Partition Tolerance）</strong>：系统在网络分区的情况下仍能继续工作</li>
+                        </ul>
+                        
+                        <h5>CAP权衡策略：</h5>
+                        <ul>
+                            <li><strong>CP系统</strong>：优先保证一致性和分区容错性，如分布式数据库</li>
+                            <li><strong>AP系统</strong>：优先保证可用性和分区容错性，如NoSQL数据库</li>
+                            <li><strong>CA系统</strong>：优先保证一致性和可用性，如单机数据库</li>
+                        </ul>
+                        
+                        <h5>一致性算法对比：</h5>
+                        <ul>
+                            <li><strong>Paxos算法</strong>：
+                                <br>- 三阶段提交：Prepare、Accept、Learn
+                                <br>- 复杂但理论完备，适合学术研究
+                                <br>- 实际实现困难，如Google Chubby
+                            </li>
+                            <li><strong>Raft算法</strong>：
+                                <br>- 领导者选举、日志复制、安全性
+                                <br>- 易于理解和实现
+                                <br>- 广泛应用：Etcd、Consul、Kubernetes
+                            </li>
+                        </ul>
+                        
+                        <h5>实际应用场景：</h5>
+                        <ul>
+                            <li>分布式配置中心：使用Raft保证配置一致性</li>
+                            <li>分布式锁：使用Zookeeper的ZAB协议</li>
+                            <li>服务发现：使用Consul的Raft实现</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q6">
+                <h3>题目 6：微服务架构设计与服务治理</h3>
+                <p>请详细说明微服务架构的设计原则和最佳实践，包括服务拆分策略、服务间通信方式、数据一致性处理等。同时，请解释服务治理的核心组件（注册中心、配置中心、网关、熔断器）的作用和实现原理。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(6)">查看答案</button>
+                <div class="answer" id="answer6">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>微服务设计原则：</h5>
+                        <ul>
+                            <li><strong>单一职责</strong>：每个服务只负责一个业务领域</li>
+                            <li><strong>松耦合</strong>：服务间通过标准接口通信</li>
+                            <li><strong>高内聚</strong>：服务内部功能紧密相关</li>
+                            <li><strong>独立部署</strong>：服务可以独立开发、测试、部署</li>
+                        </ul>
+                        
+                        <h5>服务拆分策略：</h5>
+                        <ul>
+                            <li><strong>领域驱动设计（DDD）</strong>：按业务领域拆分</li>
+                            <li><strong>数据驱动</strong>：按数据模型拆分</li>
+                            <li><strong>团队结构</strong>：按团队组织架构拆分</li>
+                            <li><strong>技术栈</strong>：按技术特点拆分</li>
+                        </ul>
+                        
+                        <h5>服务间通信：</h5>
+                        <ul>
+                            <li><strong>同步通信</strong>：REST、gRPC、Dubbo</li>
+                            <li><strong>异步通信</strong>：消息队列、事件驱动</li>
+                            <li><strong>数据一致性</strong>：Saga模式、TCC模式、事件溯源</li>
+                        </ul>
+                        
+                        <h5>服务治理组件：</h5>
+                        <ul>
+                            <li><strong>注册中心</strong>：服务发现、健康检查、负载均衡</li>
+                            <li><strong>配置中心</strong>：配置管理、动态刷新、环境隔离</li>
+                            <li><strong>网关</strong>：路由转发、认证授权、限流熔断</li>
+                            <li><strong>熔断器</strong>：故障隔离、降级处理、快速失败</li>
+                        </ul>
+                        
+                        <h5>实际应用场景：</h5>
+                        <ul>
+                            <li>电商系统：用户服务、订单服务、商品服务、支付服务</li>
+                            <li>金融系统：账户服务、交易服务、风控服务、清算服务</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q7">
+                <h3>题目 7：JVM内存模型与垃圾回收</h3>
+                <p>请详细解释JVM的内存模型，包括堆内存、方法区、虚拟机栈、本地方法栈、程序计数器的作用和特点。同时，请说明不同垃圾回收器（Serial、Parallel、CMS、G1、ZGC）的工作原理和适用场景。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(7)">查看答案</button>
+                <div class="answer" id="answer7">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>JVM内存模型：</h5>
+                        <ul>
+                            <li><strong>堆内存（Heap）</strong>：
+                                <br>- 存储对象实例，分为新生代和老年代
+                                <br>- 新生代：Eden、Survivor（S0、S1）
+                                <br>- 老年代：长期存活的对象
+                            </li>
+                            <li><strong>方法区（Metaspace）</strong>：
+                                <br>- 存储类信息、常量、静态变量
+                                <br>- JDK8后使用本地内存，不再受JVM限制
+                            </li>
+                            <li><strong>虚拟机栈</strong>：存储局部变量、操作数栈、方法出口</li>
+                            <li><strong>本地方法栈</strong>：为本地方法服务</li>
+                            <li><strong>程序计数器</strong>：当前线程执行的字节码行号</li>
+                        </ul>
+                        
+                        <h5>垃圾回收器对比：</h5>
+                        <ul>
+                            <li><strong>Serial GC</strong>：单线程，适合客户端应用</li>
+                            <li><strong>Parallel GC</strong>：多线程，适合服务器应用</li>
+                            <li><strong>CMS GC</strong>：并发标记清除，低延迟，适合Web应用</li>
+                            <li><strong>G1 GC</strong>：分代收集，可预测停顿时间</li>
+                            <li><strong>ZGC</strong>：低延迟，适合大内存应用</li>
+                        </ul>
+                        
+                        <h5>GC调优策略：</h5>
+                        <ul>
+                            <li><strong>内存分配</strong>：合理设置堆大小、新生代比例</li>
+                            <li><strong>GC频率</strong>：控制Minor GC和Major GC的频率</li>
+                            <li><strong>停顿时间</strong>：选择合适的GC器减少停顿</li>
+                            <li><strong>吞吐量</strong>：平衡GC时间和应用运行时间</li>
+                        </ul>
+                        
+                        <h5>实际应用场景：</h5>
+                        <ul>
+                            <li>高并发Web应用：使用G1或ZGC</li>
+                            <li>大数据处理：使用Parallel GC</li>
+                            <li>实时系统：使用ZGC保证低延迟</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q8">
+                <h3>题目 8：分布式缓存设计与缓存一致性</h3>
+                <p>请详细说明分布式缓存的设计原则和架构模式，包括缓存更新策略、缓存穿透、缓存击穿、缓存雪崩的解决方案。同时，请解释如何保证分布式缓存的一致性，包括缓存与数据库的一致性协议。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(8)">查看答案</button>
+                <div class="answer" id="answer8">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>缓存更新策略：</h5>
+                        <ul>
+                            <li><strong>Cache Aside</strong>：先更新数据库，再删除缓存</li>
+                            <li><strong>Write Through</strong>：同时更新缓存和数据库</li>
+                            <li><strong>Write Behind</strong>：先更新缓存，异步更新数据库</li>
+                            <li><strong>Refresh Ahead</strong>：提前刷新即将过期的缓存</li>
+                        </ul>
+                        
+                        <h5>缓存问题解决方案：</h5>
+                        <ul>
+                            <li><strong>缓存穿透</strong>：
+                                <br>- 布隆过滤器过滤无效key
+                                <br>- 缓存空值，设置较短过期时间
+                                <br>- 参数校验，拒绝无效请求
+                            </li>
+                            <li><strong>缓存击穿</strong>：
+                                <br>- 互斥锁防止并发重建缓存
+                                <br>- 逻辑过期，异步更新缓存
+                                <br>- 热点数据永不过期
+                            </li>
+                            <li><strong>缓存雪崩</strong>：
+                                <br>- 随机过期时间
+                                <br>- 多级缓存
+                                <br>- 熔断降级机制
+                            </li>
+                        </ul>
+                        
+                        <h5>缓存一致性保证：</h5>
+                        <ul>
+                            <li><strong>最终一致性</strong>：通过异步更新实现</li>
+                            <li><strong>强一致性</strong>：使用分布式事务</li>
+                            <li><strong>版本控制</strong>：通过版本号控制缓存更新</li>
+                            <li><strong>消息队列</strong>：通过消息保证更新顺序</li>
+                        </ul>
+                        
+                        <h5>实际应用场景：</h5>
+                        <ul>
+                            <li>商品详情页：使用多级缓存，CDN+Redis+本地缓存</li>
+                            <li>用户会话：使用Redis集群存储会话信息</li>
+                            <li>热点数据：使用Redis Cluster存储热点商品信息</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q9">
+                <h3>题目 9：数据库分库分表策略与实现</h3>
+                <p>请详细说明数据库分库分表的设计原则和实现方案，包括水平分片、垂直分片的区别，以及分片键的选择策略。同时，请解释分布式事务的处理方案，包括2PC、3PC、TCC、Saga等模式的特点和适用场景。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(9)">查看答案</button>
+                <div class="answer" id="answer9">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>分库分表策略：</h5>
+                        <ul>
+                            <li><strong>水平分片</strong>：
+                                <br>- 按行分割数据到不同表/库
+                                <br>- 适合数据量大但表结构相同的场景
+                                <br>- 分片键选择：用户ID、时间、地理位置
+                            </li>
+                            <li><strong>垂直分片</strong>：
+                                <br>- 按列分割数据到不同表/库
+                                <br>- 适合表字段多且访问模式不同的场景
+                                <br>- 分片原则：热点数据、冷数据分离
+                            </li>
+                        </ul>
+                        
+                        <h5>分片键选择策略：</h5>
+                        <ul>
+                            <li><strong>哈希分片</strong>：数据分布均匀，但无法范围查询</li>
+                            <li><strong>范围分片</strong>：支持范围查询，但可能数据倾斜</li>
+                            <li><strong>时间分片</strong>：适合时间序列数据</li>
+                            <li><strong>复合分片</strong>：结合多个字段进行分片</li>
+                        </ul>
+                        
+                        <h5>分布式事务方案：</h5>
+                        <ul>
+                            <li><strong>2PC（两阶段提交）</strong>：
+                                <br>- 准备阶段、提交阶段
+                                <br>- 强一致性，但性能较差
+                                <br>- 适合金融、支付等场景
+                            </li>
+                            <li><strong>3PC（三阶段提交）</strong>：
+                                <br>- 增加预提交阶段
+                                <br>- 减少阻塞，提高性能
+                                <br>- 但仍存在一致性问题
+                            </li>
+                            <li><strong>TCC（Try-Confirm-Cancel）</strong>：
+                                <br>- 业务层面的补偿机制
+                                <br>- 性能好，但开发复杂
+                                <br>- 适合微服务架构
+                            </li>
+                            <li><strong>Saga模式</strong>：
+                                <br>- 长事务的补偿机制
+                                <br>- 通过事件驱动实现
+                                <br>- 适合复杂业务流程
+                            </li>
+                        </ul>
+                        
+                        <h5>实际应用场景：</h5>
+                        <ul>
+                            <li>电商订单：按用户ID分片，使用TCC保证一致性</li>
+                            <li>日志系统：按时间分片，使用Saga处理复杂流程</li>
+                            <li>金融交易：使用2PC保证强一致性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" id="q10">
+                <h3>题目 10：系统性能优化与监控</h3>
+                <p>请详细说明系统性能优化的方法和工具，包括JVM调优、数据库优化、网络优化等。同时，请解释如何构建完整的监控体系，包括指标收集、日志管理、链路追踪、告警机制等，以及如何通过监控数据指导系统优化。</p>
+                <textarea placeholder="请在此输入你的答案..."></textarea>
+                <button class="submit-btn" onclick="showAnswer(10)">查看答案</button>
+                <div class="answer" id="answer10">
+                    <h4>📝 参考答案</h4>
+                    <div class="answer-content">
+                        <h5>性能优化方法：</h5>
+                        <ul>
+                            <li><strong>JVM调优</strong>：
+                                <br>- 堆内存大小调整
+                                <br>- GC器选择和参数调优
+                                <br>- 线程池配置优化
+                            </li>
+                            <li><strong>数据库优化</strong>：
+                                <br>- 索引优化和SQL调优
+                                <br>- 连接池配置
+                                <br>- 读写分离和分库分表
+                            </li>
+                            <li><strong>网络优化</strong>：
+                                <br>- 连接池复用
+                                <br>- 压缩传输
+                                <br>- CDN加速
+                            </li>
+                        </ul>
+                        
+                        <h5>监控体系构建：</h5>
+                        <ul>
+                            <li><strong>指标收集</strong>：
+                                <br>- 业务指标：QPS、响应时间、错误率
+                                <br>- 系统指标：CPU、内存、磁盘、网络
+                                <br>- 应用指标：JVM、数据库连接、缓存命中率
+                            </li>
+                            <li><strong>日志管理</strong>：
+                                <br>- 结构化日志格式
+                                <br>- 日志聚合和分析
+                                <br>- 日志存储和检索
+                            </li>
+                            <li><strong>链路追踪</strong>：
+                                <br>- 分布式链路追踪
+                                <br>- 性能瓶颈定位
+                                <br>- 依赖关系分析
+                            </li>
+                        </ul>
+                        
+                        <h5>告警机制：</h5>
+                        <ul>
+                            <li><strong>告警规则</strong>：阈值告警、趋势告警、复合告警</li>
+                            <li><strong>告警级别</strong>：P0（紧急）、P1（重要）、P2（一般）</li>
+                            <li><strong>告警通知</strong>：邮件、短信、钉钉、电话</li>
+                            <li><strong>告警抑制</strong>：避免告警风暴</li>
+                        </ul>
+                        
+                        <h5>优化实践：</h5>
+                        <ul>
+                            <li><strong>性能测试</strong>：压力测试、负载测试、容量规划</li>
+                            <li><strong>瓶颈分析</strong>：通过监控数据定位性能瓶颈</li>
+                            <li><strong>持续优化</strong>：建立性能优化闭环</li>
+                            <li><strong>容量规划</strong>：基于监控数据进行容量预测</li>
+                        </ul>
+                        
+                        <h5>工具推荐：</h5>
+                        <ul>
+                            <li>监控：Prometheus + Grafana、Zabbix、Nagios</li>
+                            <li>日志：ELK Stack、Loki、Graylog</li>
+                            <li>链路追踪：Jaeger、Zipkin、SkyWalking</li>
+                            <li>性能分析：JProfiler、MAT、Arthas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let completedCount = 0;
+        
+        function showAnswer(questionNum) {
+            const answer = document.getElementById(`answer${questionNum}`);
+            const textarea = answer.previousElementSibling.previousElementSibling;
+            
+            if (textarea.value.trim() !== '') {
+                completedCount++;
+                updateProgress();
+            }
+            
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+                event.target.textContent = '隐藏答案';
+            } else {
+                answer.style.display = 'none';
+                event.target.textContent = '查看答案';
+            }
+        }
+        
+        function updateProgress() {
+            const progress = (completedCount / 10) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('completed').textContent = `已完成：${completedCount}`;
+        }
+        
+        // 添加回车键提交功能
+        document.querySelectorAll('textarea').forEach(textarea => {
+            textarea.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    const questionNum = this.parentElement.id.replace('q', '');
+                    showAnswer(questionNum);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
