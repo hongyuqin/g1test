@@ -2,8 +2,6 @@ package com.huf.g1test.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.huf.g1test.annotation.DataSource;
-import com.huf.g1test.config.DataSourceEnum;
 import com.huf.g1test.entity.User;
 import com.huf.g1test.mapper.UserMapper;
 import com.huf.g1test.service.UserService;
@@ -18,46 +16,48 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override
-    @DataSource(DataSourceEnum.MASTER)
     public List<User> getUsersFromMaster() {
-        log.info("从主库查询用户列表");
-        return this.list(new QueryWrapper<>());
+        log.info("【业务查询】开始执行查询，预期路由到主库...");
+        List<User> users = this.list(new QueryWrapper<>());
+        log.info("【业务查询】查询完成，获取到 {} 条记录", users.size());
+        return users;
     }
 
     @Override
-    @DataSource(DataSourceEnum.SLAVE)
     public List<User> getUsersFromSlave() {
-        log.info("从从库查询用户列表");
-        return this.list(new QueryWrapper<>());
+        log.info("【管理查询】开始执行查询，预期路由到从库...");
+        List<User> users = this.list(new QueryWrapper<>());
+        log.info("【管理查询】查询完成，获取到 {} 条记录", users.size());
+        return users;
     }
 
     @Override
-    @DataSource(DataSourceEnum.MASTER)
     public boolean addUser(User user) {
-        log.info("向主库添加用户: {}", user.getName());
-        return this.save(user);
-    }
-    
-    /**
-     * 事务方法示例 - 强制使用主库
-     */
-    @Transactional
-    @DataSource(DataSourceEnum.MASTER)  // 事务中明确指定主库
-    public boolean addUserWithTransaction(User user) {
-        log.info("事务中添加用户: {}", user.getName());
-        // 事务中的所有操作都在主库执行
+        log.info("【写操作】开始执行插入，预期路由到主库...");
         boolean result = this.save(user);
-        // 可以执行其他需要事务的操作
+        log.info("【写操作】插入完成，结果: {}", result ? "成功" : "失败");
         return result;
     }
     
     /**
-     * 事务方法示例 - 不指定数据源，默认主库
+     * 事务方法示例 - ShardingSphere会自动路由到主库
+     */
+    @Transactional
+    public boolean addUserWithTransaction(User user) {
+        log.info("【事务操作】开始执行事务，预期路由到主库...");
+        boolean result = this.save(user);
+        log.info("【事务操作】事务完成，结果: {}", result ? "成功" : "失败");
+        return result;
+    }
+    
+    /**
+     * 默认事务方法示例 - ShardingSphere会自动路由到主库
      */
     @Transactional
     public boolean addUserDefaultTransaction(User user) {
-        log.info("默认事务中添加用户: {}", user.getName());
-        // 默认使用主库，保证事务一致性
-        return this.save(user);
+        log.info("【默认事务】开始执行默认事务，预期路由到主库...");
+        boolean result = this.save(user);
+        log.info("【默认事务】默认事务完成，结果: {}", result ? "成功" : "失败");
+        return result;
     }
 } 

@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 业务接口：从主库查询用户列表
+     * 业务接口：查询用户列表（Sharding-JDBC自动路由到主库）
      */
     @GetMapping("/business")
     public Map<String, Object> getUsersFromMaster() {
@@ -28,10 +28,10 @@ public class UserController {
             List<User> users = userService.getUsersFromMaster();
             result.put("success", true);
             result.put("data", users);
-            result.put("message", "从主库查询成功");
+            result.put("message", "查询成功（Sharding-JDBC自动路由到主库）");
             result.put("source", "MASTER");
         } catch (Exception e) {
-            log.error("从主库查询失败", e);
+            log.error("查询失败", e);
             result.put("success", false);
             result.put("message", "查询失败: " + e.getMessage());
         }
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     /**
-     * 管理后台接口：从从库查询用户列表
+     * 管理后台接口：查询用户列表（Sharding-JDBC自动路由到从库）
      */
     @GetMapping("/admin")
     public Map<String, Object> getUsersFromSlave() {
@@ -48,10 +48,10 @@ public class UserController {
             List<User> users = userService.getUsersFromSlave();
             result.put("success", true);
             result.put("data", users);
-            result.put("message", "从从库查询成功");
+            result.put("message", "查询成功（Sharding-JDBC自动路由到从库）");
             result.put("source", "SLAVE");
         } catch (Exception e) {
-            log.error("从从库查询失败", e);
+            log.error("查询失败", e);
             result.put("success", false);
             result.put("message", "查询失败: " + e.getMessage());
         }
@@ -59,7 +59,7 @@ public class UserController {
     }
 
     /**
-     * 添加用户（写操作，使用主库）
+     * 添加用户（写操作，Sharding-JDBC自动路由到主库）
      */
     @PostMapping
     public Map<String, Object> addUser(@RequestBody User user) {
@@ -67,10 +67,29 @@ public class UserController {
         try {
             boolean success = userService.addUser(user);
             result.put("success", success);
-            result.put("message", success ? "添加用户成功" : "添加用户失败");
+            result.put("message", success ? "添加用户成功（Sharding-JDBC自动路由到主库）" : "添加用户失败");
             result.put("source", "MASTER");
         } catch (Exception e) {
             log.error("添加用户失败", e);
+            result.put("success", false);
+            result.put("message", "添加失败: " + e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 事务测试接口：事务中添加用户（Sharding-JDBC自动路由到主库）
+     */
+    @PostMapping("/transaction")
+    public Map<String, Object> addUserWithTransaction(@RequestBody User user) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            boolean success = userService.addUserWithTransaction(user);
+            result.put("success", success);
+            result.put("message", success ? "事务中添加用户成功（Sharding-JDBC自动路由到主库）" : "添加用户失败");
+            result.put("source", "MASTER");
+        } catch (Exception e) {
+            log.error("事务中添加用户失败", e);
             result.put("success", false);
             result.put("message", "添加失败: " + e.getMessage());
         }
@@ -92,7 +111,7 @@ public class UserController {
             result.put("slave", slaveUsers);
             result.put("masterCount", masterUsers.size());
             result.put("slaveCount", slaveUsers.size());
-            result.put("message", "数据对比完成");
+            result.put("message", "数据对比完成（Sharding-JDBC自动路由）");
         } catch (Exception e) {
             log.error("数据对比失败", e);
             result.put("success", false);

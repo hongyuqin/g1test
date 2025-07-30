@@ -8,17 +8,27 @@ import java.util.List;
 public interface UserService extends IService<User> {
     
     /**
-     * 从主库查询用户列表（业务接口）
+     * 查询用户列表（Sharding-JDBC自动路由到主库）
      */
     List<User> getUsersFromMaster();
     
     /**
-     * 从从库查询用户列表（管理后台接口）
+     * 查询用户列表（Sharding-JDBC自动路由到从库）
      */
     List<User> getUsersFromSlave();
     
     /**
-     * 添加用户（写操作，使用主库）
+     * 添加用户（写操作，Sharding-JDBC自动路由到主库）
      */
     boolean addUser(User user);
+    
+    /**
+     * 事务中添加用户（Sharding-JDBC自动路由到主库）
+     */
+    boolean addUserWithTransaction(User user);
+    
+    /**
+     * 默认事务中添加用户（Sharding-JDBC自动路由到主库）
+     */
+    boolean addUserDefaultTransaction(User user);
 } 
